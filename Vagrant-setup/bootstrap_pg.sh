@@ -1,7 +1,7 @@
 #!/bin/sh
 
 echo "Boostrap postgres"
-export PG_DB_USER=osmuseer
+export PG_DB_USER=osmuser
 export PG_DB_PASS=osmpass
 export PG_DB_NAME=osm
 export PG_VERSION=9.3
@@ -34,7 +34,7 @@ db_create_db(){
     sudo -H -u postgres bash -c "psql --dbname $PG_DB_NAME --command=\"CREATE EXTENSION postgis\""
     sudo -H -u postgres bash -c "psql --dbname $PG_DB_NAME --command=\"CREATE EXTENSION postgis_topology\""
     echo allow access to postgres $PG_VERSION
-    sudo -H -E -u postgres bash -c 'echo "hostssl    $PG_DB_NAME      $PG_DB_USER             *          password" >> "/etc/postgresql/${PG_VERSION}/main/pg_hba.conf"'
+    sudo -H -E -u postgres bash -c 'echo "hostssl    $PG_DB_NAME      $PG_DB_USER             0.0.0.0/0          password" >> "/etc/postgresql/${PG_VERSION}/main/pg_hba.conf"'
 }
 
 db_clear_exports(){
