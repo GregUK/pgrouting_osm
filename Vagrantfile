@@ -1,5 +1,11 @@
 # -*- mode: ruby -*-
+# -*- mode: ruby -*-
 # vi: set ft=ruby :
+
+$POSTGRES_SETUP_SCRIPT = <<SCRIPT
+    echo "Provisioning postgres"
+    date > /etc/vagrant_provisioned_at
+SCRIPT
 
 # Vagrantfile API/syntax version. Don't touch unless you know what you're doing!
 VAGRANTFILE_API_VERSION = "2"
@@ -14,8 +20,13 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   # The url from where the 'config.vm.box' box will be fetched if it
   # doesn't already exist on the user's system.
-  config.vm.box_url = "pgdb"
-
+  config.vm.define :postgresdb do |postgresdb|
+    postgresdb.vm.box = "ubuntu/trusty64"
+    postgresdb.vm.hostname = "postgresdb"
+    postgresdb.vm.network "private_network", ip: "10.0.0.4"
+    # Run the shell script inline provisioner
+    postgresdb.vm.provision :shell, :path => "Vagrant-setup/bootstrap_pg.sh"
+  end
   # Create a forwarded port mapping which allows access to a specific port
   # within the machine from a port on the host machine. In the example below,
   # accessing "localhost:8080" will access port 80 on the guest machine.
