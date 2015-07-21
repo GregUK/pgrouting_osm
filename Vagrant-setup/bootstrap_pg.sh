@@ -33,6 +33,7 @@ db_create_db(){
     echo "Adding postgis extensions"
     sudo -H -u postgres bash -c "psql --dbname $PG_DB_NAME --command=\"CREATE EXTENSION postgis\""
     sudo -H -u postgres bash -c "psql --dbname $PG_DB_NAME --command=\"CREATE EXTENSION postgis_topology\""
+    sudo -H -u postgres bash -c "psql --dbname $PG_DB_NAME --command=\"CREATE EXTENSION pgrouting\""
     echo allow access to postgres $PG_VERSION
     sudo -H -E -u postgres bash -c 'echo "hostssl    $PG_DB_NAME      $PG_DB_USER             0.0.0.0/0          password" >> "/etc/postgresql/${PG_VERSION}/main/pg_hba.conf"'
 }

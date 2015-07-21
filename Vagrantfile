@@ -26,6 +26,11 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     postgresdb.vm.network "private_network", ip: "10.0.0.4"
     # Run the shell script inline provisioner
     postgresdb.vm.provision :shell, :path => "Vagrant-setup/bootstrap_pg.sh"
+    config.vm.provider :virtualbox do |vb|
+     # Use VBoxManage to customize the VM. For example to change memory:
+     vb.customize ["modifyvm", :id, "--memory", "2048"]
+     vb.customize ["modifyvm", :id, "--cpus", "2"]
+    end
   end
   # Create a forwarded port mapping which allows access to a specific port
   # within the machine from a port on the host machine. In the example below,
